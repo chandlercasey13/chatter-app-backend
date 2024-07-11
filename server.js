@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const testJWTRouter = require("./controllers/test-jwt");
 const usersRouter = require("./controllers/users");
 const profilesRouter = require("./controllers/profiles");
+const messagesRouter = require("./controllers/messages")
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
