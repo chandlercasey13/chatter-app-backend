@@ -1,15 +1,8 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const chatlogSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    hashedPassword: {
-        type: String,
-        required: true
-    },
+  participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message", default: [], }]
 });
 
-module.exports = mongoose.model('Chatlog', chatlogSchema);
+module.exports = mongoose.model("Chatlog", chatlogSchema);
