@@ -36,10 +36,6 @@ io.on("connection", (socket) => {
   });
 });
 
-app.get("/", async (req, res) => {
-    res.send("Please be working");
-});
-
 server.listen(3000, () => {
   console.log(`Listening on ${3000}`);
 });
