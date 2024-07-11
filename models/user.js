@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    chatlog: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 userSchema.set('toJSON', {
