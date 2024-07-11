@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const testJWTRouter = require("./controllers/test-jwt");
 const usersRouter = require("./controllers/users");
 const profilesRouter = require("./controllers/profiles");
-const messagesRouter = require("./controllers/messages")
+const messagesRouter = require("./controllers/messages");
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
@@ -32,12 +32,12 @@ app.use(express.json());
 app.use("/test-jwt", testJWTRouter);
 app.use("/users", usersRouter);
 app.use("/profiles", profilesRouter);
+app.use("/messages", messagesRouter);
 
 io.on("connection", (socket) => {
   socket.on("message", (messagecontent) => {
-    socket.broadcast.emit('message', messagecontent)
-    console.log(messagecontent)
-
+    socket.broadcast.emit("message", messagecontent);
+    console.log(messagecontent);
   });
 });
 
