@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const testJWTRouter = require("./controllers/test-jwt");
 const usersRouter = require("./controllers/users");
 const profilesRouter = require("./controllers/profiles");
+const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
@@ -36,6 +37,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log(`Listening on ${3000}`);
+server.listen(port, () => {
+  console.log(`Listening on ${port}`);
 });
