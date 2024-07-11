@@ -30,6 +30,10 @@ app.use("/test-jwt", testJWTRouter);
 app.use("/users", usersRouter);
 app.use("/profiles", profilesRouter);
 
+app.get("/", async (req, res) => {
+    res.send("Please be working");
+});
+
 io.on("connection", (socket) => {
   socket.on("message", (messagecontent) => {
     console.log(messagecontent);
