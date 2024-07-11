@@ -30,7 +30,14 @@ app.use("/test-jwt", testJWTRouter);
 app.use("/users", usersRouter);
 app.use("/profiles", profilesRouter);
 
-io.on("connection", (socket) => {});
+app.get("/", async (req, res) => {
+  io.on("connection", (socket) => {
+    socket.on("message", (messagecontent) => {
+      res.send(messagecontent);
+      // console.log(messagecontent);
+    });
+  });
+});
 
 server.listen(3000, () => {
   console.log(`Listening on ${3000}`);
