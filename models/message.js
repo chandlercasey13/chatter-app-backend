@@ -8,8 +8,8 @@ const messageSchema = new mongoose.Schema({
     { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   ],
   message: { type: String, required: true },
-  createdAt: { timestamp: true },
-  updatedAt: { timestamp: true },
+  createdAt: { timestamps: true },
+  updatedAt: { timestamps: true },
 });
 
 module.exports = mongoose.model("Message", messageSchema);
