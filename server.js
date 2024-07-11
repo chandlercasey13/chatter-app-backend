@@ -23,6 +23,7 @@ mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
+
 app.use(cors());
 app.use(express.json());
 
@@ -33,7 +34,9 @@ app.use("/profiles", profilesRouter);
 
 io.on("connection", (socket) => {
   socket.on("message", (messagecontent) => {
-    console.log(messagecontent);
+    socket.broadcast.emit('message', messagecontent)
+    console.log(messagecontent)
+
   });
 });
 
