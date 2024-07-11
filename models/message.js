@@ -1,16 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema({
-    username: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    hashedPassword: {
-        type: String,
-        required: true
-    },
+  senderId: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  ],
+  receiverId: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  ],
+  message: { type: String, required: true },
+  createdAt: { timestamp: true },
+  updatedAt: { timestamp: true },
 });
 
-
-module.exports = mongoose.model('Message', messageSchema);
+module.exports = mongoose.model("Message", messageSchema);
