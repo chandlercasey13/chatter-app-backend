@@ -16,4 +16,15 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const messages = await Message.find({})
+      .populate("senderId")
+      .sort({ createdAt: "desc" });
+    res.status(200).json(messages);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 module.exports = router;
