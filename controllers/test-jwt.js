@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 router.get('/sign-token', (req, res) => {
     // Mock user object added
+    
     const user = {
         _id: 1,
         username: 'test',

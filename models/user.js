@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 //   fullName: { type: String, required: true },
+  fullName: { String},
   chatlog: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
