@@ -5,14 +5,23 @@ const router = express.Router();
 
 router.use(verifyToken);
 
+router.get("/users", async (req, res) => {
+  try {
+    const signedInUserId = req.user._id;
+    const allUsers = await User.find().select("-password");
+    res.status(200).json(allUsers);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     req.body.senderId = req.user._id;
     const message = await Message.create(req.body);
     message._doc.senderId = req.user;
-
-    console.log(req.body)
-    console.log('req.user', req.user)
+    console.log(req.body);
+    console.log("req.user", req.user);
     res.status(201).json(message);
   } catch (error) {
     console.log(error);
