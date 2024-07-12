@@ -1,6 +1,6 @@
 const express = require("express");
 const verifyToken = require("../middleware/verify-token.js");
-const Messages = require("../models/message.js");
+const Message = require("../models/message.js");
 const router = express.Router();
 
 router.use(verifyToken);
@@ -13,6 +13,65 @@ router.post("/", async (req, res) => {
     res.status(201).json(message);
   } catch (error) {
     console.log(error);
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const messages = await Message.find({})
+      .populate("senderId")
+      .sort({ createdAt: "desc" });
+    res.status(200).json(messages);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.get("/:messageId", async (req, res) => {
+  try {
+    const message = await Message.findById(req.params.messageId).populate([
+      "senderId",
+      "messages.senderId",
+    ]);
+    res.status(500).json(message);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.put("/:messageId", async (req, res) => {
+  try {
+    const message = await Message.findById(req.params.messageId);
+    if (!message.senderId.equals(req.user._id)) {
+      return res.status(403).send("You're not allowed to edit message.");
+    }
+    const updatedMessage = await Message.findByIdAndUpdate(
+      req.params.messageId,
+      req.body,
+      { new: true }
+    );
+    updatedMessage._doc.senderId = req.user;
+    res.status(200).json(updatedMessage);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.delete("/:messageId", async (req, res) => {
+  try {
+    const message = await Message.findById(req.params.messageId);
+    if (!message.senderId.equals(req.user._id)) {
+      return res.status(403).send("You're not allowed to edit message.");
+    }
+    const deletedMessage = await Message.findByIdAndDelete(
+      req.params.messageId,
+      req.body,
+      { new: true }
+    );
+    deletedMessage._doc.senderId = req.user;
+    res.status(200).json(deletedMessage);
+  } catch (error) {
+    res.status(500).json(error);
   }
 });
 
