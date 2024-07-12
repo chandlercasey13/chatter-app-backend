@@ -1,6 +1,6 @@
 const express = require("express");
 const verifyToken = require("../middleware/verify-token.js");
-const Messages = require("../models/message.js");
+const Message = require("../models/message.js");
 const router = express.Router();
 
 router.use(verifyToken);
@@ -26,5 +26,19 @@ router.get("/", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+router.get("/:messageId", async (req, res) => {
+  try {
+    const message = await Message.findById(req.params.messageId).populate([
+      "senderId",
+      "messages.senderId",
+    ]);
+    res.status(500).json(error);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+
 
 module.exports = router;
