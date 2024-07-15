@@ -15,6 +15,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
+
 router.post("/", async (req, res) => {
   try {
     req.body.senderId = req.user._id;
@@ -32,6 +33,7 @@ router.get("/", async (req, res) => {
     const messages = await Message.find({})
       .populate("senderId")
       .sort({ createdAt: "desc" });
+     
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json(error);
@@ -70,18 +72,33 @@ router.put("/:messageId", async (req, res) => {
 
 router.delete("/:messageId", async (req, res) => {
   try {
-    const message = await Message.findById(req.params.messageId);
-    if (!message.senderId.equals(req.user._id)) {
-      return res.status(403).send("You're not allowed to edit message.");
+   
+    const messageSender = await Message.findById(req.params.messageId);
+    const messageStringified = messageSender.senderId[0].toString()
+
+    if (messageStringified === req.user._id){
+      console.log('this is your message to delete')
+
+    const message = await Message.findByIdAndDelete(req.params.messageId);
+    res.status(200).json(message);
     }
-    const deletedMessage = await Message.findByIdAndDelete(
-      req.params.messageId,
-      req.body,
-      { new: true }
-    );
-    deletedMessage._doc.senderId = req.user;
-    res.status(200).json(deletedMessage);
+
+   else {
+    console.log('this is not your message to delete')
+    return res.status(403)
+ }
+
+
+//converted the message sender id to string to make it comparable to req.user_id
+
+    
+
+  
+  
+    
+    
   } catch (error) {
+    console.log(error)
     res.status(500).json(error);
   }
 });
