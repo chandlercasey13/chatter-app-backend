@@ -75,10 +75,17 @@ router.delete("/:messageId", async (req, res) => {
    
     const message = await Message.findByIdAndDelete(req.params.messageId);
     
+   const messageStringified = message.senderId[0].toString()
+   
+//converted the message sender id to string to make it comparable to req.user_id
+
     
-    // if (!message.senderId.equals(req.user._id)) {
-    //    return res.status(403).send("You're not allowed to edit message.");
-    //  }
+
+  
+   if (messageStringified != req.user._id) {
+    
+       return res.status(403).send("You're not allowed to edit message.");
+    }
     
     res.status(200).json(message);
   } catch (error) {
