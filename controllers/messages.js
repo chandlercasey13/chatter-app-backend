@@ -3,14 +3,15 @@ const verifyToken = require("../middleware/verify-token.js");
 const Message = require("../models/message.js");
 const router = express.Router();
 const searchUser = require("./searchUser.js");
+const User = require("../models/user");
 
 router.use(verifyToken);
 
 router.get("/users", async (req, res) => {
-  //should it be "/getusers"? this is the route for getting users for the ChatLog sidebar
   try {
     const signedInUserId = req.user._id;
-    const allUsers = await User.find().select("-password");
+    const allUsers = await User.find();
+
     res.status(200).json(allUsers);
   } catch (error) {
     res.status(500).json(error);
