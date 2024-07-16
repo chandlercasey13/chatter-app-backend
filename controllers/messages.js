@@ -62,7 +62,7 @@ router.put("/:messageId", async (req, res) => {
     
     const message = await Message.findById(req.params.messageId);
     if (messageUserStringified === req.user._id) {
-      console.log('this is your message to edit')
+      
       
     }
     
@@ -89,14 +89,14 @@ router.delete("/:messageId", async (req, res) => {
 //converted the message sender id to string to make it comparable to req.user_id
 
     if (messageUserStringified === req.user._id){
-      console.log('this is your message to delete')
+     
 
     const message = await Message.findByIdAndDelete(req.params.messageId);
     res.status(200).json(message);
     }
 
    else {
-    console.log('this is not your message to delete')
+    
     return res.status(403)
  }
 
