@@ -37,11 +37,9 @@ router.get("/", async (req, res) => {
     const messages = await Message.find({})
       .populate("senderId")
       .sort({ createdAt: "desc" });
-<<<<<<< HEAD
 
-=======
-     console.log('message ',messages)
->>>>>>> 14e50e6aecbb9df09efe9aaab8a79d18bdd0cec4
+
+
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json(error);
@@ -92,29 +90,16 @@ router.put("/:messageId", async (req, res) => {
 router.delete("/:messageId", async (req, res) => {
   try {
     const messageSender = await Message.findById(req.params.messageId);
-<<<<<<< HEAD
-    const messageStringified = messageSender.senderId[0].toString();
-
-    if (messageStringified === req.user._id) {
-      console.log("this is your message to delete");
-=======
     const messageUserStringified = messageSender.senderId[0].toString()
 //converted the message sender id to string to make it comparable to req.user_id
 
     if (messageUserStringified === req.user._id){
      
->>>>>>> 14e50e6aecbb9df09efe9aaab8a79d18bdd0cec4
 
       const message = await Message.findByIdAndDelete(req.params.messageId);
       res.status(200).json(message);
-    } else {
-      console.log("this is not your message to delete");
-      return res.status(403);
-    }
+    } 
 
-<<<<<<< HEAD
-    //converted the message sender id to string to make it comparable to req.user_id
-=======
    else {
     
     return res.status(403)
@@ -128,7 +113,6 @@ router.delete("/:messageId", async (req, res) => {
   
     
     
->>>>>>> 14e50e6aecbb9df09efe9aaab8a79d18bdd0cec4
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
