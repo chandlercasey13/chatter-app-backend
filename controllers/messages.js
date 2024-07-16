@@ -2,10 +2,12 @@ const express = require("express");
 const verifyToken = require("../middleware/verify-token.js");
 const Message = require("../models/message.js");
 const router = express.Router();
+const searchUser = require("./searchUser.js");
 
 router.use(verifyToken);
 
 router.get("/users", async (req, res) => {
+  //should it be "/getusers"? this is the route for getting users for the ChatLog sidebar
   try {
     const signedInUserId = req.user._id;
     const allUsers = await User.find().select("-password");
@@ -15,6 +17,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
+router.post("/search-user", searchUser);
 
 router.post("/", async (req, res) => {
   try {
@@ -33,7 +36,7 @@ router.get("/", async (req, res) => {
     const messages = await Message.find({})
       .populate("senderId")
       .sort({ createdAt: "desc" });
-     
+
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json(error);
@@ -72,33 +75,22 @@ router.put("/:messageId", async (req, res) => {
 
 router.delete("/:messageId", async (req, res) => {
   try {
-   
     const messageSender = await Message.findById(req.params.messageId);
-    const messageStringified = messageSender.senderId[0].toString()
+    const messageStringified = messageSender.senderId[0].toString();
 
-    if (messageStringified === req.user._id){
-      console.log('this is your message to delete')
+    if (messageStringified === req.user._id) {
+      console.log("this is your message to delete");
 
-    const message = await Message.findByIdAndDelete(req.params.messageId);
-    res.status(200).json(message);
+      const message = await Message.findByIdAndDelete(req.params.messageId);
+      res.status(200).json(message);
+    } else {
+      console.log("this is not your message to delete");
+      return res.status(403);
     }
 
-   else {
-    console.log('this is not your message to delete')
-    return res.status(403)
- }
-
-
-//converted the message sender id to string to make it comparable to req.user_id
-
-    
-
-  
-  
-    
-    
+    //converted the message sender id to string to make it comparable to req.user_id
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json(error);
   }
 });
