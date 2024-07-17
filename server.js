@@ -12,7 +12,8 @@ const testJWTRouter = require("./controllers/test-jwt");
 const usersRouter = require("./controllers/users");
 const profilesRouter = require("./controllers/profiles");
 const messagesRouter = require("./controllers/messages");
-const chatlogsRouter = require("./controllers/chatlogs")
+const chatlogsRouter = require("./controllers/chatlogs");
+const message = require("./models/message");
 
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
@@ -38,11 +39,30 @@ app.use("/messages", messagesRouter);
 app.use("/chatlogs", chatlogsRouter);
 
 io.on("connection", (socket) => {
-  socket.on("message", (messagecontent) => {
-    socket.broadcast.emit("message", messagecontent);
-    console.log(messagecontent);
+  socket.on('join', (id, user) => {
+    console.log( id, user, 'joined')
+
+    socket.join(id)
   });
-});
+
+    socket.on("message", (messagecontent, currentRoom) => {
+      console.log(messagecontent);
+      console.log(currentRoom)
+      socket.to(currentRoom).emit('message', messagecontent)
+      
+      
+    });
+
+
+    socket.on('leave', (id, user) => {
+      socket.leave(id)
+      console.log('left', id)
+    })
+  })
+  
+  
+
+
 
 server.listen(port, () => {
   console.log(`Listening on ${port}`);

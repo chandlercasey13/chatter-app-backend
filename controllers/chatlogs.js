@@ -24,8 +24,9 @@ router.get("/", async (req, res) => {
 
        
        
-        const chatlog = await Chatlog.create(req.body);
-       
+        const chatlog = (await Chatlog.create(req.body)).populate;
+       // participants
+       //messages 
      
         res.status(200).json(chatlog)
       } catch (error) {
