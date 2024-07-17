@@ -22,10 +22,12 @@ router.post("/search-user", searchUser);
 
 router.post("/", async (req, res) => {
   try {
+    
     req.body.senderId = req.user._id;
     const message = await Message.create(req.body);
     message._doc.senderId = req.user;
-
+    console.log(req.user._id)
+    console.log(req.body)
     res.status(201).json(message);
   } catch (error) {
     console.log(error);
@@ -50,7 +52,7 @@ router.get("/:messageId", async (req, res) => {
   try {
     const message = await Message.findById(req.params.messageId).populate([
       "senderId",
-      "messages.senderId",
+      // "message.senderId",
     ]);
     res.status(500).json(message);
   } catch (error) {
