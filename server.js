@@ -12,6 +12,8 @@ const testJWTRouter = require("./controllers/test-jwt");
 const usersRouter = require("./controllers/users");
 const profilesRouter = require("./controllers/profiles");
 const messagesRouter = require("./controllers/messages");
+const chatlogsRouter = require("./controllers/chatlogs")
+
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
@@ -33,6 +35,7 @@ app.use("/test-jwt", testJWTRouter);
 app.use("/users", usersRouter);
 app.use("/profiles", profilesRouter);
 app.use("/messages", messagesRouter);
+app.use("/chatlogs", chatlogsRouter);
 
 io.on("connection", (socket) => {
   socket.on("message", (messagecontent) => {
@@ -44,3 +47,13 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
   console.log(`Listening on ${port}`);
 });
+const chatLogIndex = async () => {
+  try {
+    const res = await fetch(BACKEND_URL, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    return res.json();
+  } catch (error) {
+    console.log(error);
+  }
+};
