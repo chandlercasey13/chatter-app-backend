@@ -18,10 +18,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:userId", async (req, res) => {
+  try {
+    const { userId1, userId2 } = req.params;
+    const filteredChats = await Chatlog.find({
+      participants: { $all: [userId1, userId2] },
+    });
+
+    res.json(filteredChats);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.post("/new", async (req, res) => {
   try {
     const chatlog = await Chatlog.create(req.body);
-    
 
     console.log(chatlog._id);
     // participants
@@ -36,7 +48,7 @@ router.post("/new", async (req, res) => {
 router.put("/:chatId", async (req, res) => {
   try {
     const chatlog = await Chatlog.findById(req.params.chatId);
-    console.log(chatlog)
+    console.log(chatlog);
     chatlog.messages.push(req.body.messageId);
     await chatlog.save();
 
