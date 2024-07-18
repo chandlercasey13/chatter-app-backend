@@ -21,7 +21,10 @@ router.get("/", async (req, res) => {
 router.get("/:chatId", async (req, res) => {
   try {
     const chatId = req.params.chatId;
-    const filteredChat = await Chatlog.findById(chatId);
+    const filteredChat = await Chatlog.findById(chatId).populate([
+      "participants",
+      "messages",
+    ]);
     console.log(filteredChat);
     res.json(filteredChat);
   } catch (error) {
@@ -34,7 +37,7 @@ router.get("/user/:userId", async (req, res) => {
     const userId = req.params.userId;
     const userChats = await Chatlog.find({
       participants: userId,
-    });
+    }).populate("participants");
     console.log(userChats);
     res.json(userChats);
   } catch (error) {
