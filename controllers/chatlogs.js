@@ -38,6 +38,7 @@ router.get("/user/:userId", async (req, res) => {
     const userChats = await Chatlog.find({
       participants: userId,
     }).populate("participants");
+    
     console.log(userChats);
     res.json(userChats);
   } catch (error) {
