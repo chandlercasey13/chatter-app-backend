@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
   });
 
     socket.on("message", (messagecontent, currentRoom) => {
-      console.log(messagecontent);
+     ;
       console.log(currentRoom)
       socket.to(currentRoom).emit('message', messagecontent)
       
