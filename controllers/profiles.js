@@ -9,6 +9,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
         // if (req.user._id !== req.params.userId){
         //     return res.status(401).json({ error: "Unauthorized"})
         // }
+        console.log('params',req.params.userId)
         const user = await User.findById(req.params.userId);
         if (!user) {
             res.status(404)

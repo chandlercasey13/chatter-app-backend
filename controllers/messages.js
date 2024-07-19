@@ -26,8 +26,8 @@ router.post("/", async (req, res) => {
     req.body.senderId = req.user._id;
     const message = await Message.create(req.body);
     message._doc.senderId = req.user;
-    console.log(req.user._id)
-    console.log(req.body)
+    
+    console.log('body',req.body)
     res.status(201).json(message);
   } catch (error) {
     console.log(error);

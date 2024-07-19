@@ -64,9 +64,11 @@ router.post("/new", async (req, res) => {
 router.put("/:chatId", async (req, res) => {
   try {
     const chatlog = await Chatlog.findById(req.params.chatId);
-    console.log(chatlog);
+    
     chatlog.messages.push(req.body.messageId);
     await chatlog.save();
+    console.log('updating')
+    
 
     res.status(200).json(chatlog);
   } catch (error) {
