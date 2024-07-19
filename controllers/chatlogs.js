@@ -47,6 +47,7 @@ router.get("/user/:userId", async (req, res) => {
 });
 
 router.post("/new", async (req, res) => {
+  console.log("request", req.body)
   try {
     const chatlog = await Chatlog.create(req.body);
 
