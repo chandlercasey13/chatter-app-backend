@@ -25,9 +25,10 @@ router.get("/:chatId", async (req, res) => {
       "participants",
       "messages",
     ]);
-    console.log(filteredChat);
+    
     res.json(filteredChat);
   } catch (error) {
+    console.log(error)
     res.status(500).json(error);
   }
 });
@@ -39,23 +40,31 @@ router.get("/user/:userId", async (req, res) => {
       participants: userId,
     }).populate("participants");
     
-    console.log(userChats);
+    
     res.json(userChats);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
-router.post("/new", async (req, res) => {
-  console.log("request", req.body)
+router.post("/new/:userId", async (req, res) => {
+
   try {
-    const chatlog = await Chatlog.create(req.body);
+    // const existLog = await Chatlog.exists(req.body)
 
-    console.log(chatlog._id);
-    // participants
-    //messages
+    const existLog = await Chatlog.exists({participants: req.params.userId})
+    
 
-    res.status(200).json(chatlog);
+    if (existLog){
+      res.status(200).json(existLog)
+    } else {
+      const newChatlog = await Chatlog.create(req.body);
+      res.status(200).json(newChatlog)
+    }
+
+
+   
+
   } catch (error) {
     console.log(error);
   }
@@ -67,7 +76,7 @@ router.put("/:chatId", async (req, res) => {
     
     chatlog.messages.push(req.body.messageId);
     await chatlog.save();
-    console.log('updating')
+    
     
 
     res.status(200).json(chatlog);
