@@ -20,16 +20,18 @@ router.get("/", async (req, res) => {
 
 router.get("/:chatId", async (req, res) => {
   try {
+    
     const chatId = req.params.chatId;
-    const filteredChat = await Chatlog.findById(chatId).populate([
+    const filteredChats = await Chatlog.findById(chatId).sort({createdAt: -1}).populate([
       "participants",
       "messages",
-    ]);
-    
-    res.json(filteredChat);
+    ])
+   
+
+    res.json(filteredChats);
   } catch (error) {
-    console.log(error)
-    res.status(500).json(error);
+    
+    res.json(error);
   }
 });
 
@@ -38,9 +40,11 @@ router.get("/user/:userId", async (req, res) => {
     const userId = req.params.userId;
     const userChats = await Chatlog.find({
       participants: userId,
-    }).populate("participants");
+    }).sort({updatedAt: -1}).populate("participants")
+    .populate("messages")
     
-    
+
+
     res.json(userChats);
   } catch (error) {
     res.status(500).json(error);
@@ -50,12 +54,13 @@ router.get("/user/:userId", async (req, res) => {
 router.post("/new/:userId", async (req, res) => {
 
   try {
-    // const existLog = await Chatlog.exists(req.body)
-
-    const existLog = await Chatlog.exists({participants: req.params.userId})
     
 
-    if (existLog){
+    const existLog = await Chatlog.exists({participants: req.params.userId})
+    const existsLog = await Chatlog.exists({participants: req.body.participants[1]._id})
+
+    if (existLog && existsLog){
+      console.log('exists')
       res.status(200).json(existLog)
     } else {
       const newChatlog = await Chatlog.create(req.body);
@@ -77,7 +82,7 @@ router.put("/:chatId", async (req, res) => {
     chatlog.messages.push(req.body.messageId);
     await chatlog.save();
     
-    
+    console.log(req.body)
 
     res.status(200).json(chatlog);
   } catch (error) {

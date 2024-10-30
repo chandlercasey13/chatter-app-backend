@@ -18,7 +18,7 @@ const message = require("./models/message");
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5174",
+    origin: "http://localhost:5173",
   },
 });
 
@@ -39,24 +39,36 @@ app.use("/messages", messagesRouter);
 app.use("/chatlogs", chatlogsRouter);
 
 io.on("connection", (socket) => {
+  
+  
+
   socket.on('join', (id, user) => {
-    console.log( id, user, 'joined')
+    console.log(  user, 'joined chat:', id)
 
     socket.join(id)
   });
 
-    socket.on("message", (messagecontent, currentRoom) => {
+    socket.on("message", (messagecontent, currentRoom, chatID) => {
+
+      console.log(chatID)
+      socket.to(currentRoom).emit('message', messagecontent)
+
      
       
-      socket.to(currentRoom).emit('message', messagecontent)
+        io.emit('refreshChatLog', messagecontent, chatID)
+
+       
+     
+     
+      
       
       
     });
 
 
     socket.on('leave', (id, user) => {
-      socket.leave(id)
-      console.log('left', id)
+       socket.leave(id)
+      console.log(user, 'left', id)
     })
   })
   

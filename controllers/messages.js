@@ -60,29 +60,22 @@ router.get("/:messageId", async (req, res) => {
   }
 });
 
+
+
 router.put("/:messageId", async (req, res) => {
   try {
+ console.log(req.body)
 
-    const messageSender = await Message.findById(req.params.messageId);
-    const messageUserStringified = messageSender.senderId[0].toString()
-    
-   
-    
     const message = await Message.findById(req.params.messageId);
-    if (messageUserStringified === req.user._id) {
-      
-      
-    }
     
     
-    const updatedMessage = await Message.findByIdAndUpdate(
-      req.params.messageId,
-      req.body,
-      { new: true }
-    );
+    message.read = true
+
+
+    await message.save();
     
-    updatedMessage._doc.senderId = req.user;
-    res.status(200).json(updatedMessage);
+   console.log(message)
+   res.status(200).json(message);
   } catch (error) {
     console.log(error)
     res.status(500).json(error);
