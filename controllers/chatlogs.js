@@ -44,10 +44,11 @@ router.get("/user/:userId", async (req, res) => {
     .populate("messages")
     
 
-
+   
     res.json(userChats);
   } catch (error) {
     res.status(500).json(error);
+   
   }
 });
 
@@ -55,11 +56,10 @@ router.post("/new/:userId", async (req, res) => {
 
   try {
     
-
-    const existLog = await Chatlog.exists({participants: req.params.userId})
-    const existsLog = await Chatlog.exists({participants: req.body.participants[1]._id})
-
-    if (existLog && existsLog){
+    
+    const existLog = await Chatlog.exists({participants: {$all: [req.params.userId, req.body.participants[1]._id ] } })
+   
+    if (existLog){
       console.log('exists')
       res.status(200).json(existLog)
     } else {
@@ -71,9 +71,29 @@ router.post("/new/:userId", async (req, res) => {
    
 
   } catch (error) {
+
     console.log(error);
   }
 });
+
+router.delete("/:chatId", async (req,res) => {
+  try {
+    const deletedChat = await Chatlog.findByIdAndDelete(req.body.chatId);
+    
+   
+    
+    
+
+    res.status(200).json(deletedChat);
+  } catch (error) {
+    console.log(error);
+  }
+
+
+})
+
+
+
 
 router.put("/:chatId", async (req, res) => {
   try {
@@ -82,7 +102,7 @@ router.put("/:chatId", async (req, res) => {
     chatlog.messages.push(req.body.messageId);
     await chatlog.save();
     
-    console.log(req.body)
+    
 
     res.status(200).json(chatlog);
   } catch (error) {

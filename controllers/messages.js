@@ -64,7 +64,7 @@ router.get("/:messageId", async (req, res) => {
 
 router.put("/:messageId", async (req, res) => {
   try {
- console.log(req.body)
+ 
 
     const message = await Message.findById(req.params.messageId);
     
@@ -74,7 +74,7 @@ router.put("/:messageId", async (req, res) => {
 
     await message.save();
     
-   console.log(message)
+   
    res.status(200).json(message);
   } catch (error) {
     console.log(error)
