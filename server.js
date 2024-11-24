@@ -22,7 +22,7 @@ const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
+    allowedHeaders: ["Authorization", "Content-Type"],
     credentials: true
   }
 });
