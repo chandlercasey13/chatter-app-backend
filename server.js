@@ -21,7 +21,10 @@ const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
     origin: "*",
-  },
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true
+  }
 });
 
 mongoose.connect(process.env.MONGODB_URI);
