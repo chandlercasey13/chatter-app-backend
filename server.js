@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
-app.options("*", cors()); // Handle preflight requests for all routes
+
 
 
 app.use(
@@ -42,6 +42,14 @@ app.use(
     credentials: true, // Allow cookies or headers to be sent
   })
 );
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+})
+
 app.use(express.json());
 
 
