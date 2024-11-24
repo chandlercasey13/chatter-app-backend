@@ -11,7 +11,9 @@ router.get("/users", async (req, res) => {
   try {
     const signedInUserId = req.user._id;
     const allUsers = await User.find();
-
+    res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.status(200).json(allUsers);
   } catch (error) {
     res.status(500).json(error);
@@ -41,7 +43,9 @@ router.get("/", async (req, res) => {
       .sort({ createdAt: "desc" });
 
 
-
+      res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+      res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+      res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json(error);
@@ -54,6 +58,9 @@ router.get("/:messageId", async (req, res) => {
       "senderId",
       // "message.senderId",
     ]);
+    res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.status(500).json(message);
   } catch (error) {
     res.status(500).json(error);
