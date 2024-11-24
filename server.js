@@ -20,9 +20,8 @@ const message = require("./models/message");
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "http://localhost:5173", // Allow your frontend URL
     methods: ["GET", "POST"],
-    allowedHeaders: ["Authorization", "Content-Type"],
     credentials: true
   }
 });
@@ -35,11 +34,7 @@ mongoose.connection.on("connected", () => {
 
 
 
-app.use(cors({
-  origin: "http://localhost:5173", // Allow your frontend URL
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Authorization", "Content-Type"],
-}));
+app.use(cors());
 app.use(express.json());
 
 
