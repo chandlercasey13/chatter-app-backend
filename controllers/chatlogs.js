@@ -5,6 +5,9 @@ const router = express.Router();
 const searchUser = require("./searchUser.js");
 const User = require("../models/user.js");
 const Chatlog = require("../models/chatlog.js");
+const cors = require("cors");
+
+
 
 router.use(verifyToken);
 
