@@ -20,7 +20,7 @@ const message = require("./models/message");
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
   cors: {
-    origin: "https://chatter-messenger-app-server-07eacc0c4ebf.herokuapp.com/",
+    origin: "https://chatter-messenger-app-server-07eacc0c4ebf.herokuapp.com",
   },
 });
 
