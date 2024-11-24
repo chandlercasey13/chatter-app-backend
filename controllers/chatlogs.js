@@ -11,6 +11,12 @@ const cors = require("cors");
 
 router.use(verifyToken);
 
+router.options("/:chatId", (req, res) => {
+  res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.sendStatus(200);
+});
 router.get("/", async (req, res) => {
   try {
     const allChatlogs = await Chatlog.find().populate("participants");
