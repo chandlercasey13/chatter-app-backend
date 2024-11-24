@@ -31,10 +31,17 @@ mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
+app.options("*", cors()); // Handle preflight requests for all routes
 
 
-
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow only your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+    credentials: true, // Allow cookies or headers to be sent
+  })
+);
 app.use(express.json());
 
 
