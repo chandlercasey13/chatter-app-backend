@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePicture: { type: String },
     //   fullName: { type: String, required: true },
     
   //   chatlog: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],

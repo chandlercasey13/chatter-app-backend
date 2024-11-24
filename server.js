@@ -8,12 +8,14 @@ const express = require("express");
 const app = express();
 const server = createServer(app);
 const mongoose = require("mongoose");
-const testJWTRouter = require("./controllers/test-jwt");
+
 const usersRouter = require("./controllers/users");
-const profilesRouter = require("./controllers/profiles");
+
 const messagesRouter = require("./controllers/messages");
 const chatlogsRouter = require("./controllers/chatlogs");
 const message = require("./models/message");
+
+
 
 const port = process.env.PORT ? process.env.PORT : "3000";
 const io = new Server(server, {
@@ -31,10 +33,9 @@ mongoose.connection.on("connected", () => {
 app.use(cors());
 app.use(express.json());
 
-// Routes go here
-app.use("/test-jwt", testJWTRouter);
+
 app.use("/users", usersRouter);
-app.use("/profiles", profilesRouter);
+
 app.use("/messages", messagesRouter);
 app.use("/chatlogs", chatlogsRouter);
 
