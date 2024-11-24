@@ -18,13 +18,7 @@ const message = require("./models/message");
 
 
 const port = process.env.PORT ? process.env.PORT : "3000";
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173", // Allow your frontend URL
-    methods: ["GET", "POST"],
-    credentials: true
-  }
-});
+
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -40,7 +34,10 @@ const corsOptions = {
 };
 
 
-console.log(port)
+
+app.options("*", cors(corsOptions));
+
+
 
 app.use(
   cors(corsOptions)
@@ -48,12 +45,6 @@ app.use(
 
 app.options("*", cors(corsOptions));
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
-})
 
 app.use(express.json());
 
@@ -63,24 +54,35 @@ app.use("/users", usersRouter);
 app.use("/messages", messagesRouter);
 app.use("/chatlogs", chatlogsRouter);
 
-// io.on("connection", (socket) => {
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173", // Allow your frontend URL
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+
+
+
+io.on("connection", (socket) => {
   
   
 
-//   socket.on('join', (id, user) => {
-//     console.log(  user, 'joined chat:', id)
+  socket.on('join', (id, user) => {
+    console.log(  user, 'joined chat:', id)
 
-//     socket.join(id)
-//   });
+    socket.join(id)
+  });
 
-//     socket.on("message", (messagecontent, currentRoom, chatID) => {
+    socket.on("message", (messagecontent, currentRoom, chatID) => {
 
-//       console.log(chatID)
-//       socket.to(currentRoom).emit('message', messagecontent)
+      console.log(chatID)
+      socket.to(currentRoom).emit('message', messagecontent)
 
      
       
-//         io.emit('refreshChatLog', messagecontent, chatID)
+        io.emit('refreshChatLog', messagecontent, chatID)
 
        
      
@@ -88,24 +90,22 @@ app.use("/chatlogs", chatlogsRouter);
       
       
       
-//     });
+    });
 
 
-//     socket.on('leave', (id, user) => {
-//        socket.leave(id)
-//       console.log(user, 'left', id)
-//     })
-//   })
+    socket.on('leave', (id, user) => {
+       socket.leave(id)
+      console.log(user, 'left', id)
+    })
+  })
   
   
-//   server.prependListener("request", (req, res) => {
-//     res.setHeader("Access-Control-Allow-Origin", "*");
-//  });
+ 
 
 
-// server.listen(port, () => {
-//   console.log(`Listening on ${port}`);
-// });
+server.listen(port, () => {
+  console.log(`Listening on ${port}`);
+});
 
 
 
