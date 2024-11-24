@@ -32,16 +32,21 @@ mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
+const corsOptions = {
+  origin: "http://localhost:5173", // Allow your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
+  allowedHeaders: ["Authorization", "Content-Type"], // Allowed headers
+  credentials: true, // Allow cookies if needed
+};
+
+
 
 
 app.use(
-  cors({
-    origin: "http://localhost:5173", // Allow only your frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Authorization", "Content-Type"],
-    credentials: true, // Allow cookies or headers to be sent
-  })
+  cors(corsOptions)
 );
+
+app.options("*", cors(corsOptions));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
