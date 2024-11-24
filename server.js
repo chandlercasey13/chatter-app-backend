@@ -85,12 +85,19 @@ io.on("connection", (socket) => {
   })
   
   
-
+  server.prependListener("request", (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+ });
 
 
 server.listen(port, () => {
   console.log(`Listening on ${port}`);
 });
+
+
+
+
+
 const chatLogIndex = async () => {
   try {
     const res = await fetch(BACKEND_URL, {
