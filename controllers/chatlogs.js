@@ -11,16 +11,14 @@ const cors = require("cors");
 
 router.use(verifyToken);
 
-router.options("/:chatId", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "http://localhost:5173");
-  res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
-  res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.sendStatus(200);
-});
+
 router.get("/", async (req, res) => {
   try {
     const allChatlogs = await Chatlog.find().populate("participants");
 
+    res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.status(200).json(allChatlogs);
   } catch (error) {
     res.status(500).json(error);
@@ -55,8 +53,11 @@ router.get("/user/:userId", async (req, res) => {
     .populate("messages")
     
 
-   
+   res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.json(userChats);
+
   } catch (error) {
     res.status(500).json(error);
    
@@ -70,6 +71,12 @@ router.post("/new/:userId", async (req, res) => {
     
     const existLog = await Chatlog.exists({participants: {$all: [req.params.userId, req.body.participants[1]._id ] } })
    
+
+    res.set("Access-Control-Allow-Origin", "http://localhost:5173");
+    res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+
     if (existLog){
       console.log('exists')
       res.status(200).json(existLog)
