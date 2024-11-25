@@ -40,10 +40,9 @@ const corsOptions = {
 
 
 app.use(
-  cors(corsOptions)
+  cors()
 );
 
-app.options("*", cors(corsOptions));
 
 
 app.use(express.json());
