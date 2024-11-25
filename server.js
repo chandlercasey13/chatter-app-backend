@@ -27,7 +27,7 @@ mongoose.connection.on("connected", () => {
 });
 
 const corsOptions = {
-  origin: "http://localhost:5173", // Allow your frontend URL
+  origin: "https://chatter-messaging.netlify.app", // Allow your frontend URL
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
   allowedHeaders: ["Authorization", "Content-Type"], // Allowed headers
   credentials: true, // Allow cookies if needed
@@ -57,7 +57,7 @@ app.use("/chatlogs", chatlogsRouter);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Allow your frontend URL
+    origin: "https://chatter-messaging.netlify.app/", // Allow your frontend URL
     methods: ["GET", "POST"],
     credentials: true
   }
