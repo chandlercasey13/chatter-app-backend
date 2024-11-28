@@ -56,7 +56,7 @@ app.use("/chatlogs", chatlogsRouter);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://chatter-messaging.netlify.app", // Allow your frontend URL
+    origin: "*", // Allow your frontend URL
     methods: ["GET", "POST"],
     credentials: true
   }
