@@ -48,7 +48,7 @@ router.get("/user/:userId", async (req, res) => {
     
 
    
-    res.json(userChats);
+    res.json(userChats || []);
   } catch (error) {
     res.status(500).json(error);
    
