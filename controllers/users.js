@@ -77,23 +77,23 @@ router.post("/signin", async (req, res) => {
 });
 
 
-
 router.get('/:userId/images', async (req, res) => {
- 
+  try {
+    const user = await User.findById(req.params.userId);
 
-  const user = await User.findById(req.params.userId);
+    if (!user || !user.profilePicture) {
+      return res.status(404).json({ error: "Profile picture not found" });
+    }
 
+    const readStream = getFileStream(user.profilePicture);
 
-
-  if (!user || !user.profilePicture) {
-    return res.status(404).json({ error: "Profile picture not found" });
+    // Pipe the readStream directly to the response
+    readStream.pipe(res);
+  } catch (error) {
+    console.error("Error fetching profile picture:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-
-
- const readStream = getFileStream(user.profilePicture);
-
-  readStream.pipe(res)
-})
+});
 
 
 router.put("/:userId", upload.single('image'), async (req, res) => {
